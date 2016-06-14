@@ -40,13 +40,17 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
+            
+        </activity>
+        
+        <activity android:name="com.lnnu.activity.SimpleMap" 
+            	  android:label="路况简图">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
          <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="pEVVU2PI9in1p4fuSt1oblBwjkC3NEOq" />
