@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+ <view
+            android:id="@+id/view1"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            
+            class="ImageView" >
+          
+        </view>
+<com.baidu.mapapi.map.MapView
+ 	    android:id="@+id/bmapView"
+ 	    android:layout_width="fill_parent"
+ 	    android:layout_height="fill_parent"
+ 	    android:clickable="true"
+ 	    />
+    <LinearLayout
+        android:id="@+id/detail_linearlayout_bottom"
+        android:layout_width="fill_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+   
+        android:background="#AA9E9E9E"
+        android:paddingLeft="2dp"
+        android:paddingTop="5dp" >
+
+        <LinearLayout
+            android:id="@+id/d_comment"
+            android:layout_width="20dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/park" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent" >
+
+            <TextView
+                android:id="@+id/stopname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:text="青少年宫停车位"
+                android:textColor="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/stopnum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/stopname"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:text="[泊位： 36]"
+                android:textColor="#FFFFFF"
+                android:textColorLink="#0033FF"  />
+
+             <TextView
+                 android:id="@+id/xiangqing"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentLeft="true"
+                 android:layout_below="@+id/stopnum"
+                 android:paddingLeft="10dp"
+                 android:paddingTop="5dp"
+                 android:text="查看详情 >>"
+                 android:textColor="#1E9d85"
+                 android:textColorLink="#1E9d85" />
+
+        </RelativeLayout>
+        
+    </LinearLayout>
+     
+</RelativeLayout>

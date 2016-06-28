@@ -1,16 +1,121 @@
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.lnnu.smarttraffic.MainActivity" >
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    
+   
+    tools:context="com.example.main1.ActionBarActivity_main" >
+ 	<com.baidu.mapapi.map.MapView
+ 	    android:id="@+id/bmapView"
+ 	    android:layout_width="fill_parent"
+ 	    android:layout_height="fill_parent"
+ 	    android:clickable="true"
+ 	    />
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        
+        android:layout_marginTop="40dp"
+       android:layout_marginRight="10dp"
+        android:background="#00000000"
+        android:orientation="horizontal" >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        <ImageButton
+            android:id="@+id/img_btn_nopark"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="#00000000"
+            android:src="@drawable/nopark"
+            android:onClick="showNP" />
+
+        <ImageButton
+            android:id="@+id/img_btn_park"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="#00000000"
+            android:src="@drawable/parking" 
+            android:onClick="showParks"/>
+
+        <ImageButton
+            android:id="@+id/img_btn_position"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="#00000000"
+            android:src="@drawable/position" 
+            android:onClick="location"/>
+
+        <ImageButton
+            android:id="@+id/img_btn_monitor"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="#00000000"
+            android:src="@drawable/monitor" 
+            android:onClick="monitor"/>
+
+        <ImageButton
+            android:id="@+id/img_btn_RC"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="#00000000"
+            android:src="@drawable/roadcondition" 
+            android:onClick="showRC"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="280dp"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+         android:background="#ffffff"
+        android:layout_marginBottom="10dp" >
+
+        <ImageButton
+            android:id="@+id/img_btn_SM"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:background="#00000000"
+            android:src="@drawable/diagram"
+            android:onClick="showSM" />
+
+		<View 
+		    android:layout_width="1px"
+		    android:layout_height="wrap_content"
+		    android:layout_marginTop="12px"
+		    android:layout_marginBottom="12px"
+		    android:background="#999999"/>
+        <ImageButton
+            android:id="@+id/img_btn_go"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+             android:background="#00000000"
+            android:src="@drawable/roateline" 
+            android:onClick="go"/>
+
+        <ImageButton
+            android:id="@+id/img_btn_navi"
+            android:layout_width="70dp"
+             android:background="#00000000"
+            android:layout_height="30dp"
+            android:src="@drawable/navigation" 
+            android:onClick="toNaviActivity"/>
+		<View 
+		    android:layout_width="1px"
+		    android:layout_height="wrap_content"
+		     android:layout_marginTop="12px"
+		    android:layout_marginBottom="12px"
+		    android:background="#999999"/>
+        <ImageButton
+            android:id="@+id/img_btn_myInfo"
+            android:layout_width="70dp"
+             android:background="#00000000"
+            android:layout_height="30dp"
+            android:src="@drawable/myinfo"
+            android:onClick="myInfo" />
+
+    </LinearLayout>
 
 </RelativeLayout>
