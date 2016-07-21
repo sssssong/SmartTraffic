@@ -5,8 +5,12 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.MapStatus;
+import com.baidu.mapapi.map.MapStatusUpdate;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.UiSettings;
+import com.baidu.mapapi.model.LatLng;
 import com.lnnu.smarttraffic.CommonMethod;
 import com.lnnu.smarttraffic.R;
 
@@ -28,7 +32,9 @@ public class SimpleMap extends Activity{
 		super.onCreate(savedInstanceState);
 		//设置自定义地图样式
 				pathname=getFilesDir().getAbsolutePath()+"/dark";
+				
 				mMapView.setCustomMapStylePath(pathname);
+				
 		setContentView(R.layout.activity_simplemap);
 		
 		mMapView = (MapView) findViewById(R.id.sm_bmapview);
@@ -48,7 +54,18 @@ public class SimpleMap extends Activity{
 		uiSettings.setCompassEnabled(true);
 				
 		//大连中心点121.593478,38.94871
-		//平移后的点121.615498, 38.925857
+		//设置地图中心点及缩放级别，平移后的点121.615498, 38.925857
 		CommonMethod.toAppointedMap(mBaiduMap, 38.925857, 121.615498, 14.2f);
+	}
+	
+	public static void toAppointedMap(BaiduMap map, double lat, double lon, float zoom) {
+		// 自定义一个经纬度，先纬度，后经度
+		LatLng latLng = new LatLng(lat, lon);
+		// 自定义地图状态
+		MapStatus mapStatus = new MapStatus.Builder().target(latLng).zoom(zoom)
+				.build();
+		MapStatusUpdate u = MapStatusUpdateFactory.newMapStatus(mapStatus);
+		// 更新地图状态，加载位置。
+		map.animateMapStatus(u);
 	}
 }

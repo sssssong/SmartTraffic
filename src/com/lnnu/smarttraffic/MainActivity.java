@@ -1,8 +1,20 @@
 package com.lnnu.smarttraffic;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.List;
+
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageButton;
@@ -20,18 +32,20 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
 import com.baidu.mapapi.model.LatLng;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.lnnu.activity.SimpleMap;
+import com.lnnu.bean.Monitor;
 
 /**
  * @author guodai 2016年5月30日 主界面用于测试程序用，可以进行修改
  */
-
-
-
 public class MainActivity extends Activity {
 
 	private MapView mMapView;
 	private BaiduMap mBaiduMap;
+	private SharedPreferences sp ;
+	private Editor editor;
 	
 	// 是否开启按钮标记
 	boolean noParkFlag = false;
@@ -49,13 +63,45 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		//拷贝数据
+		File spFile=new File("/data/data/com.lnnu.smarttraffic/shared_prefs/data.xml");
+		if (!spFile.exists()) {
+			copyAssetsFileToSP("data.xml", spFile);
+			Log.e("copy", "success");
+		}
+		
+		sp = getSharedPreferences("data", Context.MODE_PRIVATE);
+		
+		getMonitorData();
 
+		
 		mMapView = (MapView) findViewById(R.id.bmapView);
 		mBaiduMap = mMapView.getMap();
 		CommonMethod.toAppointedMap(mBaiduMap, 38.94871, 121.593478, 14f);
 
 	}
 
+	public void getMonitorData(){
+		String str_monitor = sp.getString("monitor", "nothing");
+		Log.v("data", str_monitor);
+		
+		Gson gson=new Gson();
+		
+		List<Monitor> monitors=null;
+		monitors=gson.fromJson(str_monitor, new TypeToken<List<Monitor>>(){}.getType());
+		
+		Log.v("monitor", monitors.toString());
+		for (Monitor monitor : monitors) {
+			Log.v("monitor", monitor.toString());
+		}
+		
+//		String str_npr = sp.getString("npr", "nothing");
+//		Log.v("data", str_npr);
+//		
+//		String str_road = sp.getString("road", "nothing");
+//		Log.v("data", str_road);
+	}
 	// 禁停路段的点开与关闭
 	public void showNP(View v) {
 		ImageButton btn = (ImageButton) v;
@@ -235,6 +281,32 @@ public class MainActivity extends Activity {
 		}
 
 		public void onReceivePoi(BDLocation poiLocation) {
+		}
+	}
+	
+	/**
+	 * 从工程资源里面复制相关文件到存储卡上
+	 */
+	public  void copyAssetsFileToSP(String filename, File des) {
+		InputStream inputFile = null;
+		OutputStream outputFile = null;
+		try {
+			
+				inputFile =getAssets().open(filename);
+				outputFile = new FileOutputStream(des);
+				byte[] buffer = new byte[1024];
+				int length;
+				while ((length = inputFile.read(buffer)) > 0) {
+					outputFile.write(buffer, 0, length);
+				}
+				outputFile.flush();
+				outputFile.close();
+				inputFile.close();
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }
