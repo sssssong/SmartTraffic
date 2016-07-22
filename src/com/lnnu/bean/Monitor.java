@@ -1,5 +1,6 @@
 package com.lnnu.bean;
 
+
 public class Monitor {
 	
 	public int getNum() {
@@ -28,6 +29,8 @@ public class Monitor {
 	}
 	
 	private int num;
+	
+	public Monitor(){};
 	
 	public Monitor(int num, String name, double latitude, double longitude) {
 		super();

@@ -25,9 +25,12 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
@@ -36,9 +39,12 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.lnnu.activity.SimpleMap;
 import com.lnnu.bean.Monitor;
+import com.lnnu.bean.NPR;
+import com.lnnu.bean.Road;
 
 /**
  * @author guodai 2016年5月30日 主界面用于测试程序用，可以进行修改
+ * @param <T>
  */
 public class MainActivity extends Activity {
 
@@ -58,6 +64,11 @@ public class MainActivity extends Activity {
 	boolean isFirstLoc = true; // 是否首次定位
 	LocationClient mLocClient;
 	public MyLocationListenner myListener = new MyLocationListenner(); // 位置监听
+	
+	private BitmapDescriptor monitorIcon;
+	private List<Class<Monitor>> monitors=null;
+	private List<Class<NPR>> nprs=null;
+	private List<Class<Road>> roads=null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +84,7 @@ public class MainActivity extends Activity {
 		
 		sp = getSharedPreferences("data", Context.MODE_PRIVATE);
 		
-		getMonitorData();
-
+		
 		
 		mMapView = (MapView) findViewById(R.id.bmapView);
 		mBaiduMap = mMapView.getMap();
@@ -82,26 +92,17 @@ public class MainActivity extends Activity {
 
 	}
 
-	public void getMonitorData(){
-		String str_monitor = sp.getString("monitor", "nothing");
-		Log.v("data", str_monitor);
+	//根据所需要数据类型，取到相应要素集合
+	public  <T> List<T>    getMonitorData(String key,T t){
+		String value = sp.getString(key, "nothing");
+		Log.v("data", value);
 		
 		Gson gson=new Gson();
+		List<T> values=null;
+		return values=gson.fromJson(value, new TypeToken<List<T>>(){}.getType());		
 		
-		List<Monitor> monitors=null;
-		monitors=gson.fromJson(str_monitor, new TypeToken<List<Monitor>>(){}.getType());
-		
-		Log.v("monitor", monitors.toString());
-		for (Monitor monitor : monitors) {
-			Log.v("monitor", monitor.toString());
-		}
-		
-//		String str_npr = sp.getString("npr", "nothing");
-//		Log.v("data", str_npr);
-//		
-//		String str_road = sp.getString("road", "nothing");
-//		Log.v("data", str_road);
 	}
+	
 	// 禁停路段的点开与关闭
 	public void showNP(View v) {
 		ImageButton btn = (ImageButton) v;
@@ -148,10 +149,22 @@ public class MainActivity extends Activity {
 
 	// 电子警察
 	public void monitor(View v) {
+		//矢量化摄像头图标
+		monitorIcon = BitmapDescriptorFactory.fromResource(R.drawable.monitor);
+		MarkerOptions mOptions=new MarkerOptions();
+		mOptions.icon(monitorIcon);
+		
+		
+		monitors = getMonitorData("monitor",  Monitor.class);
+		Log.v("data", monitors.toString());
+		
 		ImageButton btn = (ImageButton) v;
 		if (!monitorFlag) {
 			btn.setImageResource(R.drawable.mousedown_monitor);
 			// 禁停路段代码
+			for (Class<Monitor> monitor : monitors) {
+				
+			}
 			monitorFlag = true;
 		} else {
 			btn.setImageResource(R.drawable.monitor);

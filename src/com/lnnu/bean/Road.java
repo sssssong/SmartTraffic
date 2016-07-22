@@ -1,5 +1,6 @@
 package com.lnnu.bean;
 
+
 public class Road {
 	
 	@Override
