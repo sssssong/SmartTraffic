@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -33,6 +34,9 @@ import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.Overlay;
+import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
 import com.baidu.mapapi.model.LatLng;
 import com.google.gson.Gson;
@@ -66,9 +70,9 @@ public class MainActivity extends Activity {
 	public MyLocationListenner myListener = new MyLocationListenner(); // 位置监听
 	
 	private BitmapDescriptor monitorIcon;
-	private List<Class<Monitor>> monitors=null;
-	private List<Class<NPR>> nprs=null;
-	private List<Class<Road>> roads=null;
+	private List<Monitor> monitors=null;
+	private List<NPR> nprs=null;
+	private List<Road> roads=null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +86,9 @@ public class MainActivity extends Activity {
 			Log.e("copy", "success");
 		}
 		
+		//初始化数据！
 		sp = getSharedPreferences("data", Context.MODE_PRIVATE);
+		initData();
 		
 		
 		
@@ -92,16 +98,7 @@ public class MainActivity extends Activity {
 
 	}
 
-	//根据所需要数据类型，取到相应要素集合
-	public  <T> List<T>    getMonitorData(String key,T t){
-		String value = sp.getString(key, "nothing");
-		Log.v("data", value);
-		
-		Gson gson=new Gson();
-		List<T> values=null;
-		return values=gson.fromJson(value, new TypeToken<List<T>>(){}.getType());		
-		
-	}
+
 	
 	// 禁停路段的点开与关闭
 	public void showNP(View v) {
@@ -109,6 +106,19 @@ public class MainActivity extends Activity {
 		if (!noParkFlag) {
 			btn.setImageResource(R.drawable.mousedown_nopark);
 			// 禁停路段代码
+			for (NPR  road : nprs) {
+				Log.v("road", road.toString());
+				LatLng p1=new LatLng(road.getStartLat(), road.getStartLon());
+				LatLng p2=new LatLng(road.getEndLat(), road.getEndLon());
+				 List<LatLng> points = new ArrayList<LatLng>();
+				  points.add(p1);
+			        points.add(p2);
+			        //红色#FF0000
+				        OverlayOptions ooPolyline = new PolylineOptions().width(10)
+				                .color(0xFF0000).points(points);
+				       mBaiduMap.addOverlay(ooPolyline);
+			}
+			CommonMethod.toAppointedMap(mBaiduMap, 38.94871, 121.593478, 14f);
 			noParkFlag = true;
 		} else {
 			btn.setImageResource(R.drawable.nopark);
@@ -123,6 +133,7 @@ public class MainActivity extends Activity {
 		if (!parkFlag) {
 			btn.setImageResource(R.drawable.mousedown_parking);
 			// 禁停路段代码
+			
 			parkFlag = true;
 		} else {
 			btn.setImageResource(R.drawable.parking);
@@ -154,17 +165,11 @@ public class MainActivity extends Activity {
 		MarkerOptions mOptions=new MarkerOptions();
 		mOptions.icon(monitorIcon);
 		
-		
-		monitors = getMonitorData("monitor",  Monitor.class);
-		Log.v("data", monitors.toString());
-		
 		ImageButton btn = (ImageButton) v;
 		if (!monitorFlag) {
 			btn.setImageResource(R.drawable.mousedown_monitor);
 			// 禁停路段代码
-			for (Class<Monitor> monitor : monitors) {
-				
-			}
+			
 			monitorFlag = true;
 		} else {
 			btn.setImageResource(R.drawable.monitor);
@@ -182,12 +187,14 @@ public class MainActivity extends Activity {
 		if (!roadConditonFlag) {
 			btn.setImageResource(R.drawable.mousedown_roadcondition);
 			//开启路况图层
-			mBaiduMap.setTrafficEnabled(true);
+			drawRoads();
+			CommonMethod.toAppointedMap(mBaiduMap, 38.94871, 121.593478, 14f);
 			roadConditonFlag = true;
 		} else {
 			btn.setImageResource(R.drawable.roadcondition);
 			roadConditonFlag = false;
 			mBaiduMap.setTrafficEnabled(false);
+			mBaiduMap.clear();
 		}
 	}
 
@@ -208,7 +215,7 @@ public class MainActivity extends Activity {
 		option.setScanSpan(1000);
 		mLocClient.setLocOption(option);
 		mLocClient.start();
-		
+		BDLocation lastKnownLocation = mLocClient.getLastKnownLocation();
 		mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
 				LocationMode.COMPASS, true, null));
 
@@ -322,4 +329,64 @@ public class MainActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
+	
+	public void drawRoads() {
+		List<OverlayOptions> overlays=new ArrayList<OverlayOptions>();
+		for (Road  road : roads) {
+			Log.v("road2", road.toString());
+			LatLng p1=new LatLng(road.getStartLat(), road.getStartLon());
+			Log.v("data", p1.toString());
+			LatLng p2=new LatLng(road.getEndLat(), road.getEndLon());
+			Log.v("data", p2.toString());
+			 List<LatLng> points = new ArrayList<LatLng>();
+			  points.add(p1);
+		        points.add(p2);
+		        //1代表畅通，绿色
+			if (road.getNowStatus()==1) {		
+			        OverlayOptions ooPolyline = new PolylineOptions().width(10)
+			                .color(0x17BF00).points(points);
+			        overlays.add(ooPolyline);
+			       Log.v("road3", "绿色");
+			       continue;
+			}
+				//2代表唤醒，黄色
+			if (road.getNowStatus()==2) {
+				
+			        OverlayOptions ooPolyline = new PolylineOptions().width(10)
+			                .color(0xFF9F19).points(points);
+			        overlays.add(ooPolyline);
+			       Log.v("road3", "黄色");
+			       continue;
+			}
+			//3代表拥堵，红色
+			if (road.getNowStatus()==3) {
+				
+			        OverlayOptions ooPolyline = new PolylineOptions().width(10)
+			                .color(0xF23030).points(points);
+			        overlays.add(ooPolyline);
+			       Log.v("road3", "红色");
+			}
+		}
+		mBaiduMap.addOverlays(overlays);
+		
+	}
+	
+	
+	
+	//初始化数据
+	public void initData(){
+		Gson gson=new Gson();
+		String monitor_str = sp.getString("monitor", "nothing");
+		String npr_str = sp.getString("npr", "nothing");
+		String road_str = sp.getString("road", "nothing");
+		
+			monitors = gson.fromJson(monitor_str, new TypeToken<List<Monitor>>(){}.getType());
+			nprs = gson.fromJson(npr_str, new TypeToken<List<NPR>>(){}.getType());
+			roads = gson.fromJson(road_str, new TypeToken<List<Road>>(){}.getType());
+			
+	}
+	
+
+	
+	
 }
