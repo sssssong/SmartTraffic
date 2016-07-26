@@ -7,7 +7,6 @@ import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.model.LatLng;
 
 
-import com.lnnu.smarttraffic.MainActivity;
 import com.lnnu.smarttraffic.R;
 
 import android.app.Activity;

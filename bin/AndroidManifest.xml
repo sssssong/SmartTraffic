@@ -38,7 +38,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name="com.lnnu.activity.MainActivity"
             android:label="@string/app_name" >
              <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,20 +47,23 @@
             </intent-filter>
         </activity>
           <activity
-            android:name=".ParkActivity"
+            android:name="com.lnnu.activity.ParkActivity"
             android:label="@string/app_name" >
            
         </activity>
         <activity
-            android:name=".ParkInfoActivity"
+            android:name="com.lnnu.activity.ParkInfoActivity"
             android:label="@string/app_name" >
            
         </activity>
          <activity
-            android:name=".NavigationActivity"
+            android:name="com.lnnu.activity.NavigationActivity"
             android:label="@string/app_name" >
            
         </activity>
+        <activity android:name="com.lnnu.activity.MonitorImage"
+            android:label="路况信息">
+         </activity>
         
         <activity android:name="com.lnnu.activity.SimpleMap" 
             	  android:label="路况简图">

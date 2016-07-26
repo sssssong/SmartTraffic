@@ -1,6 +1,5 @@
 package com.lnnu.bean;
 
-
 public class Monitor {
 	
 	public int getNum() {
@@ -28,25 +27,36 @@ public class Monitor {
 		this.longitude = longitude;
 	}
 	
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
 	private int num;
 	
-	public Monitor(){};
 	
-	public Monitor(int num, String name, double latitude, double longitude) {
+	
+
+	public Monitor(int num, String name, double latitude, double longitude,
+			String url) {
 		super();
 		this.num = num;
 		this.name = name;
 		this.latitude = latitude;
 		this.longitude = longitude;
+		this.url = url;
 	}
 	@Override
 	public String toString() {
 		return "Monitor [num=" + num + ", name=" + name + ", latitude="
-				+ latitude + ", longitude=" + longitude + "]";
+				+ latitude + ", longitude=" + longitude + ", url=" + url + "]";
 	}
 
 	private String name;
 	private double latitude;
 	private double longitude;
+	private String url;
 
 }
