@@ -17,8 +17,15 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
+import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
@@ -83,6 +90,16 @@ public class MainActivity extends Activity  {
 	private List<Road> roads=null;
 	private Marker monitor;
 
+	//图层相关
+	 private View viewBg;
+	boolean layer = false;
+	private ImageButton btnlayer;
+	
+	boolean normal = false;
+	boolean statellite = false;
+	RadioButton btnnormal,btnstatellite;
+	RadioGroup radiogroup;
+	private PopupWindow mPopWindow;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -111,6 +128,14 @@ public class MainActivity extends Activity  {
 			}
 		});
 
+		btnlayer = (ImageButton)findViewById(R.id.img_btn_layer);  
+		btnnormal = (RadioButton)findViewById(R.id.rad_normal); 
+		btnstatellite = (RadioButton)findViewById(R.id.rad_statellite); 
+		 //初始化遮罩层
+        viewBg = findViewById(R.id.myView);
+        //默认隐藏遮罩层
+        viewBg.setVisibility(View.GONE);
+        View contentView = LayoutInflater.from(MainActivity.this).inflate(R.layout.activity_layer, null); 
 	}
 
 
@@ -432,6 +457,57 @@ public class MainActivity extends Activity  {
 	
 	
 	
+	public void layer(View v) {
+		ImageButton btn = (ImageButton) v;
+		  viewBg.setVisibility(View.VISIBLE);
+		  viewBg.startAnimation(AnimationUtils.loadAnimation(getBaseContext(),
+	                R.drawable.enterstyles));
+		View contentView = LayoutInflater.from(MainActivity.this).inflate(R.layout.activity_layer, null);  
+        mPopWindow = new PopupWindow(contentView);  
+        mPopWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);  
+        mPopWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);  
+        int x=-100;
+        int y=-120;
+        mPopWindow.showAsDropDown(btnlayer,x,y);       
+    
+	}
+	 public boolean onTouchEvent(MotionEvent event) {
+     	// TODO Auto-generated method stub
+     	if (mPopWindow != null && mPopWindow.isShowing()) {
+     		mPopWindow.dismiss();
+     		mPopWindow = null;
+     	}
+     	return super.onTouchEvent(event);
+     	}
+	 
+	public void layerback(View v) {
+		ImageButton btn = (ImageButton) v;
+		//btn.setImageResource(R.drawable.mousedown_roadcondition);
+		
+		 viewBg.startAnimation(AnimationUtils.loadAnimation(getBaseContext(),
+                 R.drawable.exitstyle));
+         viewBg.setVisibility(View.GONE);
+         mPopWindow.dismiss();
+	}
+
+	//单选按钮事件
+		public void setMapMode(View view) {
+	        boolean checked = ((RadioButton) view).isChecked();
+	        switch (view.getId()) {
+	            case R.id.rad_normal:
+	                if (checked) {
+	                    mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
+	                }
+	                break;
+	            case R.id.rad_statellite:
+	                if (checked) {
+	                    mBaiduMap.setMapType(BaiduMap.MAP_TYPE_SATELLITE);
+	                }
+	                break;
+	            default:
+	                break;
+	        }
+	    }
 
 	
 	

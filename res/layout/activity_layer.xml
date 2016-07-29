@@ -1,0 +1,103 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@drawable/normal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="end"
+    android:orientation="horizontal" >
+
+<LinearLayout 
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="end"
+    android:orientation="vertical" >
+
+    
+  
+
+    <LinearLayout
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+      
+        android:gravity="end"
+         android:background="@drawable/layer2"
+        android:orientation="horizontal" >
+        
+        
+        <ImageButton
+            android:id="@+id/layerback"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="#00ffffff"
+            android:onClick="layerback"
+            android:src="@drawable/backlayer" />
+         
+      
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        
+         android:background="@drawable/layer1"
+        android:gravity="center_horizontal"
+        >
+
+        <RadioGroup
+            android:id="@+id/rgs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:gravity="center"
+          
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/rad_normal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                 android:layout_marginTop="8dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                 android:layout_marginBottom="8dp"
+                android:layout_weight="1"
+                android:background="#00000000"
+                android:button="@null"
+                android:drawableTop="@drawable/rad_normal"
+                android:gravity="center"
+                android:onClick="setMapMode"
+                android:text="2D平面图"
+                android:textSize="13sp" />
+
+            <RadioButton
+                android:id="@+id/rad_statellite"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="8dp"
+                 android:layout_marginBottom="8dp"
+                android:layout_weight="1"
+                android:background="#00000000"
+                android:button="@null"
+                android:drawableTop="@drawable/rad_statellite"
+                android:gravity="center"
+                android:onClick="setMapMode"
+                android:text="卫星图"
+                android:textSize="13sp" />
+
+        </RadioGroup>
+     
+    </LinearLayout>
+
+</LinearLayout>
+
+<View
+    android:layout_width="10dp"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12px"
+    android:layout_marginTop="12px"
+    android:background="#00ffffff" />
+
+
+ </LinearLayout>
