@@ -212,71 +212,9 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
           android:background="@drawable/buttonstyle"
-        android:text="电话" 
+        android:text="呼叫" 
         android:textColor="#3f3f3f"/>
 </LinearLayout>
 
-<LinearLayout
-    android:id="@+id/share"
-    android:layout_width="fill_parent"
-    android:layout_height="40dp"
-    android:layout_alignParentLeft="true"
-    android:layout_below="@id/tel"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
-    android:layout_marginTop="10dp" >
-
-   <Button
-    android:id="@+id/bn2"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:layout_alignParentRight="true"
-    android:layout_below="@+id/tel"
-    android:textColor="#3f3f3f"
-    android:background="@drawable/buttonstyle"
-    android:text="分享" />
-</LinearLayout>
-
-<LinearLayout
-    android:id="@+id/jiucuo"
-    android:layout_width="fill_parent"
-    android:layout_height="40dp"
-    android:layout_alignParentLeft="true"
-    android:layout_below="@id/share"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
-    android:layout_marginTop="10dp" >
-
-   <Button
-    android:id="@+id/bn3"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:layout_alignParentRight="true"
-    android:layout_below="@+id/tel"
-    android:background="@drawable/buttonstyle"
-    android:text="纠错"
-    android:textColor="#3f3f3f" />
-</LinearLayout>
-
-<LinearLayout
-    android:id="@+id/tousu"
-    android:layout_width="fill_parent"
-    android:layout_height="40dp"
-    android:layout_alignParentLeft="true"
-    android:layout_below="@id/jiucuo"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
-    android:layout_marginTop="10dp" >
-
-   <Button
-    android:id="@+id/bn4"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:layout_alignParentRight="true"
-    android:layout_below="@+id/tel"
-    android:background="@drawable/buttonstyle"
-    android:text="投诉" 
-    android:textColor="#3f3f3f"/>
-</LinearLayout>
 
 </RelativeLayout>
