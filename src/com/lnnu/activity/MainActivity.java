@@ -280,7 +280,8 @@ public class MainActivity extends Activity  {
 
 	// 导航
 	public void toNaviActivity(View v) {
-		Toast.makeText(this, "导航界面", 1).show();
+		Intent intent=new Intent(this,NavigationActivity.class);
+		startActivity(intent);
 	}
 
 	// 路线出行
@@ -290,7 +291,8 @@ public class MainActivity extends Activity  {
 
 	// 我的信息
 	public void myInfo(View v) {
-		Toast.makeText(this, "我的信息", 1).show();
+		Intent intent=new Intent(this,LoginActivity.class);
+		startActivity(intent);
 	}
 
 	@Override
