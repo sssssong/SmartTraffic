@@ -31,9 +31,6 @@ public class SimpleMap extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//设置自定义地图样式
-				pathname=getFilesDir().getAbsolutePath()+"/dark";
-				
-				mMapView.setCustomMapStylePath(pathname);
 				
 		setContentView(R.layout.activity_simplemap);
 		
@@ -45,6 +42,7 @@ public class SimpleMap extends Activity{
 		mMapView.showScaleControl(false);
 		
 		mBaiduMap = mMapView.getMap();
+		
 		mBaiduMap.setTrafficEnabled(true);
 		
 		UiSettings uiSettings = mBaiduMap.getUiSettings();

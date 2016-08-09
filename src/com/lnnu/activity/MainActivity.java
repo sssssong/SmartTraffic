@@ -43,13 +43,21 @@ import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
+import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.Polyline;
 import com.baidu.mapapi.map.PolylineOptions;
-import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.model.LatLngBounds;
+import com.baidu.mapapi.search.core.PoiInfo;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
+import com.baidu.mapapi.search.poi.PoiDetailResult;
+import com.baidu.mapapi.search.poi.PoiNearbySearchOption;
+import com.baidu.mapapi.search.poi.PoiResult;
+import com.baidu.mapapi.search.poi.PoiSearch;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.lnnu.bean.Monitor;
@@ -57,21 +65,23 @@ import com.lnnu.bean.NPR;
 import com.lnnu.bean.Road;
 import com.lnnu.smarttraffic.CommonMethod;
 import com.lnnu.smarttraffic.R;
-import com.lnnu.smarttraffic.R.drawable;
-import com.lnnu.smarttraffic.R.id;
-import com.lnnu.smarttraffic.R.layout;
 
 /**
  * @author guodai 2016年5月30日 主界面用于测试程序用，可以进行修改
  * @param <T>
  */
-public class MainActivity extends Activity  {
+public class MainActivity extends Activity  implements OnGetPoiSearchResultListener{
 
 	private MapView mMapView;
 	private BaiduMap mBaiduMap;
 	private SharedPreferences sp ;
 	private Editor editor;
 	
+	//POI查找器
+		 private PoiSearch mPoiSearch = null;
+		 private LatLng nowLocation;
+		 private List<Overlay> poiOverlays=new ArrayList<Overlay>();
+		 
 	// 是否开启按钮标记
 	boolean noParkFlag = false;
 	boolean parkFlag = false;
@@ -81,10 +91,12 @@ public class MainActivity extends Activity  {
 	
 	//定位相关
 	boolean isFirstLoc = true; // 是否首次定位
-	LocationClient mLocClient;
-	public MyLocationListenner myListener = new MyLocationListenner(); // 位置监听
+	
+	private LocationClient mLocClient;
+	public MyLocationListenner myListener=null; // 位置监听
 	
 	private BitmapDescriptor monitorIcon;
+	private BitmapDescriptor poiIcon;
 	private List<Monitor> monitors=null;
 	private List<NPR> nprs=null;
 	private List<Road> roads=null;
@@ -116,7 +128,9 @@ public class MainActivity extends Activity  {
 		//初始化数据！
 		sp = getSharedPreferences("data", Context.MODE_PRIVATE);
 		initData();
-		CommonMethod.toAppointedMap(mBaiduMap, 38.94871, 121.593478, 14f);
+		
+		locInits();
+//		CommonMethod.toAppointedMap(mBaiduMap, 38.94871, 121.593478, 14f);
 		//点击线段，显示num
 		mBaiduMap.setOnPolylineClickListener(new OnPolylineClickListener() {
 			
@@ -174,11 +188,28 @@ public class MainActivity extends Activity  {
 		if (!parkFlag) {
 			btn.setImageResource(R.drawable.mousedown_parking);
 			// 停车场代码
+			mPoiSearch=PoiSearch.newInstance();
+			mPoiSearch.setOnGetPoiSearchResultListener(this);  
 			
+			if (nowLocation==null) {
+				locInits();
+				nowLocation=new LatLng(mLocClient.getLastKnownLocation().getLatitude(), mLocClient.getLastKnownLocation().getLongitude());
+			}
+			
+			PoiNearbySearchOption nearbySearchOption = new PoiNearbySearchOption();  
+			Log.v("POI", nowLocation.toString());
+	        nearbySearchOption.location(nowLocation);  
+	        nearbySearchOption.keyword("停车场");  
+	        nearbySearchOption.radius(1500);// 检索半径，单位是米  
+	        nearbySearchOption.pageCapacity(30);
+	        nearbySearchOption.pageNum(0);  
+	        mPoiSearch.searchNearby(nearbySearchOption);// 发起附近检索请求  
+	        
 			parkFlag = true;
 		} else {
 			btn.setImageResource(R.drawable.parking);
 			parkFlag = false;
+			mBaiduMap.clear();
 		}
 	}
 
@@ -218,6 +249,7 @@ public class MainActivity extends Activity  {
 				LatLng position=new LatLng(monitor.getLatitude(), monitor.getLongitude());
 				mOptions.position(position).extraInfo(markerInfo);
 				  Marker marker = (Marker) mBaiduMap.addOverlay(mOptions);
+				  marker.setTitle("monitor");
 			}
 			
 			monitorFlag = true;
@@ -259,6 +291,7 @@ public class MainActivity extends Activity  {
 		
 		// 定位初始化
 		mLocClient = new LocationClient(this);
+		myListener=new MyLocationListenner();
 		mLocClient.registerLocationListener(myListener);
 		LocationClientOption option = new LocationClientOption();
 		option.setOpenGps(true);// 打开gps
@@ -267,6 +300,7 @@ public class MainActivity extends Activity  {
 		mLocClient.setLocOption(option);
 		mLocClient.start();
 		BDLocation lastKnownLocation = mLocClient.getLastKnownLocation();
+		
 		mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
 				LocationMode.COMPASS, true, null));
 
@@ -344,6 +378,9 @@ public class MainActivity extends Activity  {
 					.direction(100).latitude(location.getLatitude())
 					.longitude(location.getLongitude()).build();
 			mBaiduMap.setMyLocationData(locData);
+			
+			nowLocation=new LatLng(location.getLatitude(), location.getLongitude());
+			
 			if (isFirstLoc) {
 				isFirstLoc = false;
 				LatLng ll = new LatLng(location.getLatitude(),
@@ -447,10 +484,18 @@ public class MainActivity extends Activity  {
 				
 				@Override
 				public boolean onMarkerClick(Marker arg0) {
-					Bundle extraInfo = arg0.getExtraInfo();
-					Intent intent=new Intent(MainActivity.this, MonitorImage.class);
-					intent.putExtra("makrerInfo",extraInfo );
-					startActivity(intent);
+					if (arg0.getTitle().equals("monitor")) {
+						Bundle extraInfo = arg0.getExtraInfo();
+						Intent intent=new Intent(MainActivity.this, MonitorImage.class);
+						intent.putExtra("makrerInfo",extraInfo );
+						startActivity(intent);
+					}
+					if (arg0.getTitle().equals("park")) {
+						Bundle extraInfo = arg0.getExtraInfo();
+						Intent intent=new Intent(MainActivity.this, ParkInfoActivity.class);
+						intent.putExtra("poiInfo",extraInfo );
+						startActivity(intent);
+					}
 					return false;
 				}
 			});
@@ -511,6 +556,72 @@ public class MainActivity extends Activity  {
 	        }
 	    }
 
-	
-	
+
+
+	@Override
+	public void onGetPoiDetailResult(PoiDetailResult result) {
+		if (result.error != SearchResult.ERRORNO.NO_ERROR) {
+			Toast.makeText(MainActivity.this, "抱歉，未找到结果", Toast.LENGTH_SHORT)
+					.show();
+		} else {
+			Toast.makeText(MainActivity.this,
+					result.getName() + ": " + result.getAddress(),
+					Toast.LENGTH_SHORT).show();
+		}
+	}
+
+
+
+	@Override
+	public void onGetPoiResult(PoiResult result) {
+		if (result == null
+				|| result.error == SearchResult.ERRORNO.RESULT_NOT_FOUND) {
+			Toast.makeText(MainActivity.this, "未找到结果", Toast.LENGTH_LONG)
+					.show();
+			return;
+		}
+		if (result.error == SearchResult.ERRORNO.NO_ERROR) {
+			mBaiduMap.clear();
+			
+			//矢量化停车场图标
+			poiIcon = BitmapDescriptorFactory.fromResource(R.drawable.park);
+			MarkerOptions mOptions=new MarkerOptions();
+			mOptions.icon(poiIcon);
+			
+			List<PoiInfo> allPoi = result.getAllPoi();
+			for (PoiInfo p:allPoi) {
+				
+				Bundle poiInfo=new Bundle();
+				poiInfo.putString("name", p.name);
+				poiInfo.putString("phone", p.phoneNum);
+				poiInfo.putString("address", p.address);
+				
+				mOptions.position(p.location).extraInfo(poiInfo);
+				  Marker marker = (Marker) mBaiduMap.addOverlay(mOptions);
+				  marker.setTitle("park");
+				  poiOverlays.add(marker);
+			}
+		
+			zoomToSpan();
+			return;
+		}
+	}
+
+			 public void zoomToSpan() {
+			        if (mBaiduMap == null) {
+			            return;
+			        }
+			        if (poiOverlays.size() > 0) {
+			            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+			            for (Overlay overlay : poiOverlays) {
+			                // polyline 中的点可能太多，只按marker 缩放
+			                if (overlay instanceof Marker) {
+			                    builder.include(((Marker) overlay).getPosition());
+			                }
+			            }
+			            mBaiduMap.setMapStatus(MapStatusUpdateFactory
+			                    .newLatLngBounds(builder.build()));
+			        }
+			    }
+
 }

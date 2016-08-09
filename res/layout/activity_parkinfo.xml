@@ -40,7 +40,8 @@
         android:layout_centerVertical="true"
         android:gravity="center"
         android:paddingLeft="20dp"
-        android:src="@drawable/back" />
+        android:src="@drawable/back" 
+        android:onClick="back"/>
 
 </RelativeLayout> 
 </LinearLayout>
@@ -49,22 +50,22 @@
     android:id="@+id/fubiaoti"
     android:layout_width="fill_parent"
     android:layout_height="40dp"
-    android:background="#f9fff9"
-    
     android:layout_alignParentLeft="true"
-    android:layout_below="@id/detail_linearlayout_bottom" >
+    android:layout_below="@id/detail_linearlayout_bottom"
+    android:background="#f9fff9" >
 
- <TextView
-     android:id="@+id/stopname"
-     android:layout_width="wrap_content"
-     android:layout_height="wrap_content"
-     android:layout_gravity="center"
-     android:paddingLeft="8dp"
-     android:text="青少年宫停车泊位"
-
-     android:textColor="#000000"
-      />
+    <TextView
+        android:id="@+id/stopname"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="0.25"
+        android:background="@drawable/textstyle"
+        android:gravity="center|fill"
+        android:paddingLeft="8dp"
+        android:text="青少年宫停车泊位"
+        android:textColor="#000000" />
 </LinearLayout>
+
 <View 
      android:id="@+id/siv1"
 		    android:layout_width="fill_parent"
@@ -114,7 +115,7 @@
         android:layout_marginLeft="5dp"
         android:gravity="center_vertical"
         android:paddingLeft="8dp"
-        android:text="有效期至:15-02-12 "
+        android:text="有效期至:17-02-12 "
         android:textColor="#3f3f3f"
         android:background="@drawable/textstyle"
         
@@ -135,8 +136,7 @@
 
 <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-   >
+    android:layout_height="93dp" >
    
     <TextView
      android:id="@+id/sto"
@@ -146,6 +146,7 @@
      android:paddingLeft="8dp"
      android:text="地址： 大连市西岗区五四路36-38号"
      android:textColor="#000000"
+     android:background="@drawable/textstyle"
      />
 
  <TextView
@@ -154,44 +155,21 @@
      android:layout_height="25dp"
      android:layout_alignParentLeft="true"
      android:layout_below="@+id/sto"
-     android:paddingLeft="8dp"
      android:gravity="center_vertical"
+     android:paddingLeft="8dp"
      android:text="泊位： 36"
-     android:textColor="#000000"
-     />
- <TextView
-     android:id="@+id/sto2"
-     android:layout_width="wrap_content"
-     android:layout_height="25dp"
-     android:layout_alignParentLeft="true"
-     android:layout_below="@+id/sto1"
-     android:paddingLeft="8dp"
-     android:gravity="center_vertical"
-     android:text="类型：道路停车泊位"
-     android:textColor="#000000"
-     />
+     android:textColor="#000000" />
+
  <TextView
      android:id="@+id/sto3"
      android:layout_width="wrap_content"
      android:layout_height="25dp"
      android:layout_alignParentLeft="true"
-     android:layout_below="@+id/sto2"
-     android:paddingLeft="8dp"
+     android:layout_below="@+id/sto1"
      android:gravity="center_vertical"
-     android:text="收费方式：人工，计时"
-     android:textColor="#000000"
-     />
- <TextView
-     android:id="@+id/sto4"
-     android:layout_width="wrap_content"
-     android:layout_height="25dp"
-     android:layout_alignParentLeft="true"
-     android:layout_below="@+id/sto3"
      android:paddingLeft="8dp"
-     android:gravity="center_vertical"
-     android:text="营业时间：白天，夜间"
-     android:textColor="#000000"
-      />
+     android:text="收费方式：计时"
+     android:textColor="#000000" />
  
 </RelativeLayout>
    
@@ -212,8 +190,9 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
           android:background="@drawable/buttonstyle"
-        android:text="呼叫" 
-        android:textColor="#3f3f3f"/>
+        android:text="呼          叫" 
+        android:textColor="#3f3f3f"
+        android:onClick="call"/>
 </LinearLayout>
 
 
