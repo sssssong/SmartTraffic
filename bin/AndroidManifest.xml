@@ -69,9 +69,18 @@
             	  android:label="路况简图">
            
         </activity>
+          
+        <activity android:name="com.lnnu.activity.NavigationAcivity" 
+            	  android:label="导航">
+           
+        </activity>
+         <activity android:name="com.lnnu.activity.LoginActivity" 
+            	  android:label="我">
+           
+        </activity>
          <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="Ml2fhhGVU69s7SjHy1yNI0Pspsx3pTsn" />
+            android:value="fr8S3g9v5Eg98Pi8WdarbeKiC8y0xa65" />
          
     </application>
 
