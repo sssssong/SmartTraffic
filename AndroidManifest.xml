@@ -79,9 +79,13 @@
             	  android:label="我">
            
         </activity>
+          <activity android:name="com.lnnu.activity.xianluActivity" 
+            	  android:label="线路">
+           
+        </activity>
          <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="pEVVU2PI9in1p4fuSt1oblBwjkC3NEOq" />
+            android:value="fr8S3g9v5Eg98Pi8WdarbeKiC8y0xa65" />
          
     </application>
 

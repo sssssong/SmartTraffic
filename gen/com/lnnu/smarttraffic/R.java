@@ -71,7 +71,7 @@ public final class R {
         public static final int textstyle=0x7f02002e;
     }
     public static final class id {
-        public static final int action_settings=0x7f080033;
+        public static final int action_settings=0x7f080038;
         public static final int beian=0x7f080022;
         public static final int biaoti=0x7f08001f;
         public static final int bmapView=0x7f08000a;
@@ -82,6 +82,7 @@ public final class R {
         public static final int editText1=0x7f080006;
         public static final int editText2=0x7f080008;
         public static final int end_et=0x7f08002f;
+        public static final int end_et1=0x7f080036;
         public static final int fubiaoti=0x7f080020;
         public static final int image=0x7f080017;
         public static final int imageView1=0x7f080004;
@@ -105,12 +106,14 @@ public final class R {
         public static final int rad_normal=0x7f080002;
         public static final int rad_statellite=0x7f080003;
         public static final int rgs=0x7f080001;
+        public static final int road=0x7f080037;
         public static final int route1_layout=0x7f08002c;
         public static final int route2_layout=0x7f08002e;
         public static final int siv1=0x7f080021;
         public static final int sm_bmapview=0x7f080032;
         public static final int sname1=0x7f080023;
         public static final int start_et=0x7f08002d;
+        public static final int start_et1=0x7f080034;
         public static final int sto=0x7f080026;
         public static final int sto1=0x7f080027;
         public static final int sto3=0x7f080028;
@@ -119,7 +122,9 @@ public final class R {
         public static final int stopnum=0x7f08001d;
         public static final int tel=0x7f080029;
         public static final int textView1=0x7f080005;
+        public static final int textView11=0x7f080033;
         public static final int textView2=0x7f080007;
+        public static final int textView21=0x7f080035;
         public static final int view1=0x7f080019;
         public static final int xiangqing=0x7f08001e;
         public static final int xq=0x7f080025;
@@ -134,6 +139,7 @@ public final class R {
         public static final int activity_parkinfo=0x7f030006;
         public static final int activity_route_planning=0x7f030007;
         public static final int activity_simplemap=0x7f030008;
+        public static final int activity_xianlu=0x7f030009;
     }
     public static final class menu {
         public static final int main=0x7f070000;

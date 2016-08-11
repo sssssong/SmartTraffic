@@ -320,7 +320,8 @@ public class MainActivity extends Activity  implements OnGetPoiSearchResultListe
 
 	// 路线出行
 	public void go(View v) {
-		Toast.makeText(this, "出行界面", 1).show();
+		Intent intent=new Intent(this,xianluActivity.class);
+		startActivity(intent);
 	}
 
 	// 我的信息

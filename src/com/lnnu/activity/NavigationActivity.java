@@ -136,7 +136,7 @@ public class NavigationActivity extends Activity implements OnClickListener {
  	    if(index<4){
  	    if(index==0){
  		   index++;
- 		  drivingOption.policy(DrivingPolicy.ECAR_DIS_FIRST);
+ 		   drivingOption.policy(DrivingPolicy.ECAR_TIME_FIRST);
 	 	   routePlanSearch.drivingSearch(drivingOption);
 	 	   routePlanSearch.setOnGetRoutePlanResultListener(new OnGetRoutePlanResultListener() {
 	           
@@ -250,7 +250,7 @@ public class NavigationActivity extends Activity implements OnClickListener {
  	    dynamicdriving(index);
  	  
  	    }else if(index==3){
- 	    drivingOption.policy(DrivingPolicy.ECAR_TIME_FIRST);
+ 	   drivingOption.policy(DrivingPolicy.ECAR_DIS_FIRST);
  	   routePlanSearch.drivingSearch(drivingOption);
        routePlanSearch.setOnGetRoutePlanResultListener(new OnGetRoutePlanResultListener() {
           
